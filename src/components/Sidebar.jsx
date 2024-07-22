@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AiOutlineSend } from 'react-icons/ai'
 import { CiClock2 } from 'react-icons/ci'
 import { FaRegStar } from 'react-icons/fa'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoDocumentOutline, IoPencilSharp } from 'react-icons/io5'
 import { MdInsertPhoto } from 'react-icons/md'
+import { useDispatch } from 'react-redux'
+import { setOpen } from '../store/authSlice'
 
 const Sidebar = () => {
+    // const [open, setOpen] = useState(false)
+    const dispatch = useDispatch()
   return (
     <div className='w-[15%]  h-screen mt-2'>
-        <button className='bg-white text-gray-700 rounded-2xl p-4 flex items-center gap-2 ml-4'>
+        <button onClick={()=>dispatch(setOpen(true))} className='bg-white text-gray-700 rounded-2xl p-4 flex items-center gap-2 ml-4'>
             <IoPencilSharp/>
             Compose
         </button>
