@@ -6,13 +6,28 @@ import { CiCircleQuestion } from "react-icons/ci";
 import { IoSettingsOutline } from 'react-icons/io5';
 import { PiDotsNineBold } from 'react-icons/pi';
 import Avatar from 'react-avatar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setSearchText } from '../store/authSlice.js';
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { auth } from '../firebase.js';
+import { signOut } from 'firebase/auth';
+import { setUser } from '../store/authSlice.js';
 const Navbar = () => {
     const [searchQuery, setSearchQuery] = useState("")
-    const dispatch = useDispatch()
+    const [toggle, setToggle] = useState(false)
 
-    useEffect(()=> {
+    const dispatch = useDispatch()
+    const user = useSelector(store => store.authSlice.user)
+    const signOutHandler = async() => {
+        const response = await signOut(auth).then(() => {
+            dispatch(setUser(null));
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    useEffect(() => {
         dispatch(setSearchText(searchQuery))
     }, [searchQuery])
     return (
@@ -32,18 +47,32 @@ const Navbar = () => {
             </div>
             <div className='flex items-center justify-end ml-72'>
                 <div className='p-3 rounded-full hover:bg-gray-800 cursor-pointer'>
-                <CiCircleQuestion size={"30px"} />
+                    <CiCircleQuestion size={"30px"} />
                 </div>
                 <div className='p-3 rounded-full hover:bg-gray-800 cursor-pointer'>
-                <IoSettingsOutline size={"25px"} />
+                    <IoSettingsOutline size={"25px"} />
                 </div>
                 <div className='p-3 rounded-full hover:bg-gray-800 cursor-pointer'>
-                <PiDotsNineBold size={"25px"} />
+                    <PiDotsNineBold size={"25px"} />
                 </div>
-                <div className='m-2'>
-                <Avatar src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg" size="40" round={true} />
+                <div className='relative cursor-pointer'>
+                    <Avatar onClick={() => setToggle(!toggle)} src={user?.photoURL} googleId="118096717852922241760" size="40" round={true} />
+                    <AnimatePresence>
+                        {
+                            toggle && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ duration: 0.1 }}
+                                    className='absolute right-2 z-20 shadow-lg bg-white rounded-md'>
+                                    <p onClick={signOutHandler} className='p-2 underline text-zinc-800'>LogOut</p>
+                                </motion.div>
+                            )
+                        }
+                    </AnimatePresence>
                 </div>
-                
+
             </div>
         </div>
     )

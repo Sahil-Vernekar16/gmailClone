@@ -7,7 +7,8 @@ const authSlice = createSlice(
             open: false,
             emails: [],
             selectedEmail: null,
-            searchText: ""
+            searchText: "",
+            user: null
         },
         reducers: {
             setOpen: (state, action) => {
@@ -21,10 +22,13 @@ const authSlice = createSlice(
             },
             setSearchText: (state,action) =>{
                 state.searchText = action.payload
+            },
+            setUser: (state,action) =>{
+                state.user = action.payload
             }
         },
     }
 )
 
-export const {setOpen, setEmails,setSelectedEmail, setSearchText} = authSlice.actions;
+export const {setOpen, setEmails,setSelectedEmail, setSearchText, setUser} = authSlice.actions;
 export default authSlice.reducer;
