@@ -4,15 +4,27 @@ const authSlice = createSlice(
     {
         name: "authSlice",
         initialState: {
-            open: false
+            open: false,
+            emails: [],
+            selectedEmail: null,
+            searchText: ""
         },
         reducers: {
             setOpen: (state, action) => {
                 state.open = action.payload
+            },
+            setEmails: (state,action) => {
+                state.emails = action.payload
+            },
+            setSelectedEmail: (state,action) => {
+                state.selectedEmail = action.payload
+            },
+            setSearchText: (state,action) =>{
+                state.searchText = action.payload
             }
         },
     }
 )
 
-export const {setOpen} = authSlice.actions;
+export const {setOpen, setEmails,setSelectedEmail, setSearchText} = authSlice.actions;
 export default authSlice.reducer;

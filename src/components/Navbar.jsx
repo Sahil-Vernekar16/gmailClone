@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosSearch } from "react-icons/io";
 import { BsFilterRight } from "react-icons/bs";
@@ -6,7 +6,15 @@ import { CiCircleQuestion } from "react-icons/ci";
 import { IoSettingsOutline } from 'react-icons/io5';
 import { PiDotsNineBold } from 'react-icons/pi';
 import Avatar from 'react-avatar';
+import { useDispatch } from 'react-redux';
+import { setSearchText } from '../store/authSlice.js';
 const Navbar = () => {
+    const [searchQuery, setSearchQuery] = useState("")
+    const dispatch = useDispatch()
+
+    useEffect(()=> {
+        dispatch(setSearchText(searchQuery))
+    }, [searchQuery])
     return (
         <div className='p-1 ml-3 flex items-center'>
             <RxHamburgerMenu size={"20px"} />
@@ -16,7 +24,7 @@ const Navbar = () => {
             </div >
             <div className='bg-[#474747] flex rounded-full w-[45%] ml-44 py-3 px-2 items-center gap-2'>
                 <button><IoIosSearch size={"20px"} /></button>
-                <input type="text" placeholder='Search Mail' className='bg-transparent w-full' />
+                <input type="text" placeholder='Search Mail' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className='bg-transparent w-full outline-none' />
                 <button className='flex justify-end'><BsFilterRight size={"20px"} /></button>
             </div>
             <div>
